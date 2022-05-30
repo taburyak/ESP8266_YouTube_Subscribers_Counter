@@ -1,0 +1,2 @@
+#define BOARD_FIRMWARE_VERSION        "0.0.4"
+#define BOARD_HARDWARE_VERSION        "1.0.0"
