@@ -1,6 +1,10 @@
+#pragma once
+
 #include <Arduino.h>
-#include "ServiceState.h"
 #include "Setings.h"
+#include "ServiceState.h"
+#include "StateHandler.h"
+
 
 #define DEBUG_PRINT Serial.println
 
@@ -19,6 +23,11 @@ public:
   void begin()
   {
     DEBUG_PRINT("");
+    DEBUG_PRINT("*------------------------------------*");
+    DEBUG_PRINT("* ESP8266 YouTube subscriber counter *");
+    DEBUG_PRINT("*------------------------------------*");
+
+    DEBUG_PRINT("");
     DEBUG_PRINT("Hardware v" + String(BOARD_HARDWARE_VERSION));
     DEBUG_PRINT("Firmware v" + String(BOARD_FIRMWARE_VERSION));
 
@@ -26,6 +35,8 @@ public:
     // button_init();
     // config_init();
 
+    ServiceState::set(MODE_INITIAL_PERIPH);
+    
     // if (configStore.flagConfig) {
     //   ServiceState::set(MODE_CONNECTING_NET);
     // } else {
@@ -37,20 +48,22 @@ public:
   {
     switch (ServiceState::get()) 
     {
-      case MODE_WAIT_CONFIG:          break;
+      case MODE_WAIT_CONFIG:
+      case MODE_INITIAL_PERIPH:       enterInitialPeriph(); break;
       // case MODE_CONFIGURING:       enterConfigMode();    break;
       // case MODE_CONNECTING_NET:    enterConnectNet();    break;
       // case MODE_CONNECTING_CLOUD:  enterConnectCloud();  break;
-      // case MODE_RUNNING:           enterRunCloud();      break;
+      case MODE_RUNNING:              enterRunLoop();       break;
       // case MODE_OTA_UPGRADE:       enterOTA();           break;
       // case MODE_SWITCH_TO_STA:     enterSwitchToSTA();   break;
       // case MODE_RESET_CONFIG:      enterResetConfig();   break;
       // case MODE_NO_WIFI:           enterNoWiFiMode();    break;
       // case MODE_NO_CLOUD:          enterNoCloudMode();   break;
-      // default:                     enterError();         break;
+      case MODE_IDLE:                 enterIdle();          break;
+      default:                        enterError();         break;
     }
   }
 
 };
 
-Provisioning BlynkProvisioning;
+Provisioning ServiceProvisioning;

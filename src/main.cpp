@@ -19,15 +19,6 @@
 #include <ESP8266WebServer.h>     //Local WebServer used to serve the configuration portal
 #include <WiFiManager.h>          //https://github.com/tzapu/WiFiManager WiFi Configuration Magic
 
-#define LCD_CLK_PIN   14
-#define LCD_MISO_PIN  12
-#define LCD_MOSI_PIN  13
-#define LCD_DC_PIN    5
-#define LCD_CS_PIN    15
-#define LCD_RST_PIN   4
-
-Adafruit_PCD8544 display = Adafruit_PCD8544(LCD_CLK_PIN, LCD_MOSI_PIN, LCD_DC_PIN, LCD_CS_PIN, LCD_RST_PIN);
-
 // Replace with your network credentials
 const char *ssid     = "TP-LINK_BFA2";
 const char *password = "8YU8QF7mM4";
@@ -49,19 +40,8 @@ bool flagDot = false;
 void setup() 
 {
   Serial.begin(115200);
-  Serial.println();
-  Serial.println("*------------------------------------*");
-  Serial.println("* ESP8266 YouTube subscriber counter *");
-  Serial.println("*------------------------------------*");
-  
-  display.begin();
-  // init done
 
-  // you can change the contrast around to adapt the display
-  // for the best viewing!
-  display.setContrast(25);
-  display.setRotation(2);
-  display.display(); // show splashscreen
+  ServiceProvisioning.begin();
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) 
@@ -78,6 +58,8 @@ void setup()
 
 void loop() 
 {
+  ServiceProvisioning.run();  
+
   time_t epochTime = timeClient.getEpochTime();
   Serial.print("Epoch Time: ");
   Serial.println(epochTime);
@@ -135,7 +117,7 @@ void loop()
     display.printf("%02d:%02d", currentHour, currentMinute);
   else
     display.printf("%02d %02d", currentHour, currentMinute);
-  display.setCursor(5, 17);
+  display.setCursor(0, 17);
   display.setTextSize(1);
   display.print(monthDay);
   display.print(" ");
