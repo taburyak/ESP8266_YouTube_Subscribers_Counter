@@ -2,8 +2,6 @@
 #include <YoutubeApi.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
-#include <SPI.h>
-#include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_PCD8544.h>
 #include "SimpleTimer.h"
@@ -94,13 +92,9 @@ void loop()
     display.printf("%02d:%02d", currentHour, currentMinute);
   else
     display.printf("%02d %02d", currentHour, currentMinute);
-  display.setCursor(0, 17);
+  display.setCursor(10, 17);
   display.setTextSize(1);
-  display.print(monthDay);
-  display.print(" ");
-  display.print(currentMonthName);
-  display.print(" ");
-  display.println(currentYear);
+  display.printf("%02d/%02d/%4d", monthDay, currentMonth, currentYear);
   display.setCursor(20, 27);
   display.setTextSize(1);
   display.println(weekDay);

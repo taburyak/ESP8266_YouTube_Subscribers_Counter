@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Arduino.h>
+#include <Wire.h>
 #include <Setings.h>
 #include <NTPClient.h>
 #include <WiFiUdp.h>
@@ -21,7 +22,6 @@ NTPClient timeClient(ntpUDP, "pool.ntp.org");
 void enterInitialPeriph()
 {
     display.begin();
-
     // you can change the contrast around to adapt the display
     // for the best viewing!
     display.setContrast(25);
