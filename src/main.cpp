@@ -2,7 +2,6 @@
 #include <YoutubeApi.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
-#include <NTPClient.h>
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
@@ -19,16 +18,6 @@
 #include <ESP8266WebServer.h>     //Local WebServer used to serve the configuration portal
 #include <WiFiManager.h>          //https://github.com/tzapu/WiFiManager WiFi Configuration Magic
 
-// Replace with your network credentials
-const char *ssid     = "TP-LINK_BFA2";
-const char *password = "8YU8QF7mM4";
-char apiKey[45]  = "AIzaSyCx06fJXr32wQO5O78J4IUYKOSzkN7TiM4";
-char channelId[30] = "UCHMrCiNnJB6PrRraDDZEyZQ";
-
-// Define NTP Client to get time
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org");
-
 //Week Days
 String weekDays[7]={"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
@@ -42,18 +31,6 @@ void setup()
   Serial.begin(115200);
 
   ServiceProvisioning.begin();
-
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) 
-  {
-    delay(500);
-    Serial.print(".");
-  }
-
-  // Initialize a NTPClient to get time
-  timeClient.begin();
-  timeClient.setTimeOffset(3600 * 3);
-  timeClient.update();
 }
 
 void loop() 
