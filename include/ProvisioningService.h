@@ -54,6 +54,7 @@ public:
       case MODE_CONNECTING_NET:       enterConnectNet();    break;
       case MODE_CONNECTING_CLOUD:     enterConnectCloud();  break;
       case MODE_RUNNING:              enterRun();           break;
+      case MODE_DISPLAY:              enterDisplay();       break;
       // case MODE_OTA_UPGRADE:       enterOTA();           break;
       // case MODE_SWITCH_TO_STA:     enterSwitchToSTA();   break;
       // case MODE_RESET_CONFIG:      enterResetConfig();   break;
