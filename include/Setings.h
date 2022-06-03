@@ -1,12 +1,18 @@
 #pragma once
 
-#define BOARD_FIRMWARE_VERSION        "0.0.4"
-#define BOARD_HARDWARE_VERSION        "1.0.0"
+#define BOARD_FIRMWARE_VERSION  "0.0.4"
+#define BOARD_HARDWARE_VERSION  "1.0.0"
 
-#define MY_SSID                 "TP-LINK_BFA2"
-#define MY_PASSWORD             "8YU8QF7mM4"
-#define MY_API_KEY              "AIzaSyCx06fJXr32wQO5O78J4IUYKOSzkN7TiM4"
-#define MY_CHANNEL_ID           "UCHMrCiNnJB6PrRraDDZEyZQ"
+#define TFT_CS                  15
+#define TFT_DC                  5
 
-#define TFT_CS   15
-#define TFT_DC   5
+#define TFT_BACKGRAUND_COLOR    (ILI9341_BLACK)
+#define TFT_CLOCK_COLOR         (ILI9341_YELLOW)
+#define TFT_CLOCK_Y             (30U)
+#define TFT_CLOCK_SIZE          (5U)
+#define TFT_DATE_COLOR          (ILI9341_GREEN)
+#define TFT_DATE_Y              (TFT_CLOCK_Y + 55U)
+#define TFT_DATE_SIZE           (2U)
+#define TFT_WEEKDAY_COLOR       (ILI9341_RED)
+#define TFT_WEEKDAY_Y           (TFT_DATE_Y + 30U)
+#define TFT_WEEKDAY_SIZE        (2U)

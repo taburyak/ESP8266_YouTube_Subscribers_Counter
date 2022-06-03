@@ -4,7 +4,6 @@
 #include <ESP8266WiFi.h>
 #include <DNSServer.h>            //Local DNS Server used for redirecting all rs to the configuration portal
 #include <ESP8266WebServer.h>     //Local WebServer used to serve the configuration portal
-#include <SPI.h>
 #include <Wire.h>
 #include <Setings.h>
 #include <NTPClient.h>
@@ -12,6 +11,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_ILI9341.h>
 #include <SimpleTimer.h>
+#include <SecretDefinitions.h>
 
 // #include <YoutubeApi.h>
 // #include <WiFiClientSecure.h>
@@ -47,7 +47,7 @@ void timerOnceSecond();
 
 void enterInitialPeriph()
 {
-    tft.begin();
+    tft.begin(25000000U);
     tft.setRotation(2);
     tft.fillScreen(ILI9341_BLACK);
 
@@ -86,35 +86,54 @@ void enterRun()
 
 void enterDisplay()
 {
+    int16_t x, y;
+    uint16_t w, h;
+
     time_t epochTime = timeClient.getEpochTime();
     struct tm *ptm = gmtime ((time_t *)&epochTime);
-
-    tft.setTextSize(4);
-    tft.setCursor(30, 0);
-    tft.setTextColor(ILI9341_BLACK);
-    tft.print("     ");
-    tft.setCursor(30, 0);
-    tft.setTextColor(ILI9341_WHITE);
-    if(flagDot)
-        tft.printf("%02d:%02d", timeClient.getHours(), timeClient.getMinutes());
-    else
-        tft.printf("%02d %02d", timeClient.getHours(), timeClient.getMinutes());
-
-    // display.clearDisplay();
-    // display.setCursor(10, 0);
-    // display.setTextSize(2);
-    // if(flagDot)
-    //     display.printf("%02d:%02d", timeClient.getHours(), timeClient.getMinutes());
-    // else
-    //     display.printf("%02d %02d", timeClient.getHours(), timeClient.getMinutes());
-    // display.setCursor(10, 17);
-    // display.setTextSize(1);
     
-    // display.printf("%02d/%02d/%4d", ptm->tm_mday, ptm->tm_mon+1, ptm->tm_year+1900);
-    // display.setCursor(10, 27);
-    // display.setTextSize(1);
-    // display.println(weekDays[timeClient.getDay()]);
-    // display.display();
+    int currentMonth = ptm->tm_mon+1;
+    String currentMonthName = months[currentMonth-1];    
+
+    String bufStr;
+    
+    char bufChar[6];
+    
+    if(flagDot)
+    {
+        sprintf(bufChar, "%02d:%02d", timeClient.getHours(), timeClient.getMinutes());            
+    }
+        
+    else
+    {
+        sprintf(bufChar, "%02d %02d", timeClient.getHours(), timeClient.getMinutes());
+    }
+    
+    bufStr = String(bufChar);
+
+    tft.setTextSize(TFT_CLOCK_SIZE);
+    tft.getTextBounds(bufStr, 0, 0, &x, &y, &w, &h);
+    tft.setTextColor(TFT_CLOCK_COLOR, TFT_BACKGRAUND_COLOR);
+    tft.setCursor((ILI9341_TFTWIDTH / 2) - (w / 2), TFT_CLOCK_Y);
+    tft.print(bufStr);
+
+    sprintf(bufChar, "%02d", ptm->tm_mday);
+
+    bufStr = String(bufChar) + " " + currentMonthName + " " + String(ptm->tm_year+1900);
+
+    tft.setTextSize(TFT_DATE_SIZE);
+    tft.getTextBounds(bufStr, 0, 0, &x, &y, &w, &h);
+    tft.setTextColor(TFT_DATE_COLOR, TFT_BACKGRAUND_COLOR);
+    tft.setCursor((ILI9341_TFTWIDTH / 2) - (w / 2), TFT_DATE_Y);
+    tft.print(bufStr);
+    
+    bufStr = weekDays[timeClient.getDay()];
+
+    tft.setTextSize(TFT_WEEKDAY_SIZE);
+    tft.getTextBounds(bufStr, 0, 0, &x, &y, &w, &h);
+    tft.setTextColor(TFT_WEEKDAY_COLOR, TFT_BACKGRAUND_COLOR);
+    tft.setCursor((ILI9341_TFTWIDTH / 2) - (w / 2), TFT_WEEKDAY_Y);
+    tft.print(bufStr);
     
     ServiceState::set(MODE_RUNNING);
 }
