@@ -31,10 +31,6 @@ public:
     DEBUG_PRINT("Hardware v" + String(BOARD_HARDWARE_VERSION));
     DEBUG_PRINT("Firmware v" + String(BOARD_FIRMWARE_VERSION));
 
-    // indicator_init();
-    // button_init();
-    // config_init();
-
     ServiceState::set(MODE_INITIAL_PERIPH);
     
     // if (configStore.flagConfig) {
