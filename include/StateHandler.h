@@ -44,6 +44,7 @@ String months[12]={"January", "February", "March", "April", "May", "June", "July
 SimpleTimer timer;
 
 void timerOnceSecond();
+void timerRefreshData();
 
 void enterInitialPeriph()
 {
@@ -53,7 +54,8 @@ void enterInitialPeriph()
 
     ServiceState::set(MODE_CONNECTING_NET);
 
-    timer.setInterval(1000, timerOnceSecond);
+    timer.setInterval(1000U, timerOnceSecond);
+    timer.setInterval(1000U * 60U, timerRefreshData);
 }
 
 void enterConnectNet()
@@ -73,7 +75,7 @@ void enterConnectCloud()
 {
     // Initialize a NTPClient to get time
     timeClient.begin();
-    timeClient.setTimeOffset(3600 * 3);
+    timeClient.setTimeOffset(3600 * TIME_ZONE);
     timeClient.update();
 
     ServiceState::set(MODE_RUNNING);
@@ -119,7 +121,7 @@ void enterDisplay()
 
     sprintf(bufChar, "%02d", ptm->tm_mday);
 
-    bufStr = String(bufChar) + " " + currentMonthName + " " + String(ptm->tm_year+1900);
+    bufStr = "   " + String(bufChar) + " " + currentMonthName + " " + String(ptm->tm_year+1900) + "   ";
 
     tft.setTextSize(TFT_DATE_SIZE);
     tft.getTextBounds(bufStr, 0, 0, &x, &y, &w, &h);
@@ -127,14 +129,30 @@ void enterDisplay()
     tft.setCursor((ILI9341_TFTWIDTH / 2) - (w / 2), TFT_DATE_Y);
     tft.print(bufStr);
     
-    bufStr = weekDays[timeClient.getDay()];
+    bufStr = "  " + weekDays[timeClient.getDay()] + "  ";
 
     tft.setTextSize(TFT_WEEKDAY_SIZE);
     tft.getTextBounds(bufStr, 0, 0, &x, &y, &w, &h);
-    tft.setTextColor(TFT_WEEKDAY_COLOR, TFT_BACKGRAUND_COLOR);
+    
+    if(timeClient.getDay() == 0 || timeClient.getDay() == 6)
+    {
+        tft.setTextColor(TFT_WEEKENDS_COLOR, TFT_BACKGRAUND_COLOR);
+    }
+    else
+    {
+        tft.setTextColor(TFT_WEEKDAYS_COLOR, TFT_BACKGRAUND_COLOR);
+    }
+    
     tft.setCursor((ILI9341_TFTWIDTH / 2) - (w / 2), TFT_WEEKDAY_Y);
     tft.print(bufStr);
     
+    ServiceState::set(MODE_RUNNING);
+}
+
+void enterRefreshData()
+{
+    timeClient.update();
+
     ServiceState::set(MODE_RUNNING);
 }
 
@@ -152,6 +170,11 @@ void timerOnceSecond()
 {
     flagDot = !flagDot;
     ServiceState::set(MODE_DISPLAY);
+}
+
+void timerRefreshData()
+{
+    ServiceState::set(MODE_REFRESH_DATA);
 }
 
 //---------------------------------------------------------

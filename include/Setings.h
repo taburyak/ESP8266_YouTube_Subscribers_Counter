@@ -6,6 +6,8 @@
 #define TFT_CS                  15
 #define TFT_DC                  5
 
+#define TIME_ZONE               (3U)
+
 #define TFT_BACKGRAUND_COLOR    (ILI9341_BLACK)
 #define TFT_CLOCK_COLOR         (ILI9341_YELLOW)
 #define TFT_CLOCK_Y             (30U)
@@ -13,6 +15,7 @@
 #define TFT_DATE_COLOR          (ILI9341_GREEN)
 #define TFT_DATE_Y              (TFT_CLOCK_Y + 55U)
 #define TFT_DATE_SIZE           (2U)
-#define TFT_WEEKDAY_COLOR       (ILI9341_RED)
+#define TFT_WEEKDAYS_COLOR      (ILI9341_BLUE)
+#define TFT_WEEKENDS_COLOR      (ILI9341_RED)
 #define TFT_WEEKDAY_Y           (TFT_DATE_Y + 30U)
 #define TFT_WEEKDAY_SIZE        (2U)
