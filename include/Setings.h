@@ -19,3 +19,5 @@
 #define TFT_WEEKENDS_COLOR      (ILI9341_RED)
 #define TFT_WEEKDAY_Y           (TFT_DATE_Y + 30U)
 #define TFT_WEEKDAY_SIZE        (3U)
+
+#define JSON_MEMORY_BUFFER      (1024*2) // now much memory to give to the decoding of the json response
