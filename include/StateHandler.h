@@ -255,7 +255,7 @@ void displayYouTubeSubscriberCount()
     int16_t tbx, tby; uint16_t tbw, tbh; // boundary box window
     uint16_t x, y;
 
-    tft.setTextColor(ILI9341_LIGHTGREY);
+    tft.setTextColor(ILI9341_LIGHTGREY, TFT_BACKGRAUND_COLOR);
     tft.setTextSize(2);
 
     // youtube logo graphic
