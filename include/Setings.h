@@ -6,7 +6,7 @@
 #define TFT_CS                  15
 #define TFT_DC                  5
 
-#define TIME_ZONE               (3U)
+#define TIME_ZONE               (2U)
 
 #define TFT_BACKGRAUND_COLOR    (ILI9341_BLACK)
 #define TFT_CLOCK_COLOR         (ILI9341_YELLOW)
